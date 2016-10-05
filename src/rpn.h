@@ -7,5 +7,6 @@ enum {
 };
 
 int infix_to_postfix(char *postfix, const char *infix);
+int postfix_to_infix(char *infix, const char *postfix);
 
 #endif
