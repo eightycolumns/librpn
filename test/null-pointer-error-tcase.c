@@ -4,27 +4,30 @@
 
 #include "src/rpn.h"
 
+static char infix[] = "";
+static char postfix[] = "";
+
 START_TEST(postfix_dest_cannot_be_NULL) {
   int expected = RPN_NULL_POINTER_ERROR;
-  int actual = infix_to_postfix(NULL, "");
+  int actual = infix_to_postfix(NULL, infix);
   ck_assert_int_eq(expected, actual);
 } END_TEST
 
 START_TEST(infix_src_cannot_be_NULL) {
   int expected = RPN_NULL_POINTER_ERROR;
-  int actual = infix_to_postfix("", NULL);
+  int actual = infix_to_postfix(postfix, NULL);
   ck_assert_int_eq(expected, actual);
 } END_TEST
 
 START_TEST(infix_dest_cannot_be_NULL) {
   int expected = RPN_NULL_POINTER_ERROR;
-  int actual = postfix_to_infix(NULL, "");
+  int actual = postfix_to_infix(NULL, postfix);
   ck_assert_int_eq(expected, actual);
 } END_TEST
 
 START_TEST(postfix_src_cannot_be_NULL) {
   int expected = RPN_NULL_POINTER_ERROR;
-  int actual = postfix_to_infix("", NULL);
+  int actual = postfix_to_infix(infix, NULL);
   ck_assert_int_eq(expected, actual);
 } END_TEST
 
