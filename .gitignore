@@ -1,0 +1,3 @@
+*.o
+librpn.a
+rpn-test
