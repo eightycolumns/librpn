@@ -2,6 +2,8 @@
 
 #include <stddef.h>
 
+#include "src/stack.h"
+
 int infix_to_postfix(char *postfix, const char *infix) {
   if (postfix == NULL || infix == NULL) {
     return RPN_NULL_POINTER_ERROR;
