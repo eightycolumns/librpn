@@ -11,9 +11,7 @@ int infix_to_postfix(char *postfix, const char *infix) {
 }
 
 int postfix_to_infix(char *infix, const char *postfix) {
-  (void)postfix; // Suppress "unused parameter" warning
-
-  if (infix == NULL) {
+  if (infix == NULL || postfix == NULL) {
     return RPN_NULL_POINTER_ERROR;
   }
 
