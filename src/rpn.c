@@ -89,9 +89,77 @@ int postfix_to_infix(char *infix, const char *postfix) {
 
       strcpy(infix, "");
 
-      strcat(infix, l_operand);
+      if (!is_operand(l_operand)) {
+        int low = 0;
+
+        int inside_parens = 0;
+
+        for (size_t i = 0; i < strlen(l_operand); i += 1) {
+          char token[2];
+          copy_substring(token, l_operand + i, 1);
+
+          if (is_opening_paren(token)) {
+            inside_parens += 1;
+          } else if (is_closing_paren(token)) {
+            inside_parens -= 1;
+          }
+
+          if (inside_parens) {
+            continue;
+          }
+
+          if (is_operator(token) && (low == 0 || precedence_of(token) < low)) {
+            low = precedence_of(token);
+          }
+        }
+
+        if (low < precedence_of(token)) {
+          strcat(infix, "(");
+          strcat(infix, l_operand);
+          strcat(infix, ")");
+        } else {
+          strcat(infix, l_operand);
+        }
+      } else {
+        strcat(infix, l_operand);
+      }
+
       strcat(infix, token);
-      strcat(infix, r_operand);
+
+      if (!is_operand(r_operand)) {
+        int low = 0;
+
+        int inside_parens = 0;
+
+        for (size_t i = 0; i < strlen(r_operand); i += 1) {
+          char token[2];
+          copy_substring(token, r_operand + i, 1);
+
+          if (is_opening_paren(token)) {
+            inside_parens += 1;
+          } else if (is_closing_paren(token)) {
+            inside_parens -= 1;
+          }
+
+          if (inside_parens) {
+            continue;
+          }
+
+          if (is_operator(token) && (low == 0 || precedence_of(token) < low)) {
+            low = precedence_of(token);
+          }
+        }
+
+        if (low < precedence_of(token)) {
+          strcat(infix, "(");
+          strcat(infix, r_operand);
+          strcat(infix, ")");
+        } else {
+          strcat(infix, r_operand);
+        }
+      } else {
+        strcat(infix, r_operand);
+      }
 
       if (push(&stack, infix) == NULL) {
         clear(&stack);
