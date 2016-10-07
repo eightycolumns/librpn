@@ -69,6 +69,39 @@ int postfix_to_infix(char *infix, const char *postfix) {
     return RPN_NULL_POINTER_ERROR;
   }
 
+  Stack *stack = NULL;
+
+  for (size_t i = 0; i < strlen(postfix); i += 1) {
+    char token[2];
+    copy_substring(token, postfix + i, 1);
+
+    if (is_operand(token)) {
+      if (push(&stack, token) == NULL) {
+        clear(&stack);
+        return RPN_MEMORY_ALLOCATION_ERROR;
+      }
+    } else if (is_operator(token)) {
+      char r_operand[strlen(peek(stack)) + 1];
+      pop(r_operand, &stack);
+
+      char l_operand[strlen(peek(stack)) + 1];
+      pop(l_operand, &stack);
+
+      strcpy(infix, "");
+
+      strcat(infix, l_operand);
+      strcat(infix, token);
+      strcat(infix, r_operand);
+
+      if (push(&stack, infix) == NULL) {
+        clear(&stack);
+        return RPN_MEMORY_ALLOCATION_ERROR;
+      }
+    }
+  }
+
+  clear(&stack);
+
   return RPN_SUCCESS;
 }
 
