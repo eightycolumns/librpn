@@ -11,6 +11,7 @@ static bool is_operand(const char *token);
 static bool is_operator(const char *token);
 static int precedence_of(const char *operator);
 static bool stack_takes_precedence(const Stack *stack, const char *operator);
+static bool is_left_associative(const char *operator);
 
 int infix_to_postfix(char *postfix, const char *infix) {
   if (postfix == NULL || infix == NULL) {
@@ -105,7 +106,7 @@ static int precedence_of(const char *operator) {
 static bool stack_takes_precedence(const Stack *stack, const char *operator) {
   assert(operator != NULL);
 
-  if (!is_empty(stack) && strcmp("^", operator) != 0) {
+  if (!is_empty(stack) && is_left_associative(operator)) {
     return precedence_of(peek(stack)) >= precedence_of(operator);
   }
 
@@ -114,4 +115,15 @@ static bool stack_takes_precedence(const Stack *stack, const char *operator) {
   }
 
   return false;
+}
+
+static bool is_left_associative(const char *operator) {
+  assert(operator != NULL);
+
+  return (
+    strcmp("+", operator) == 0 ||
+    strcmp("-", operator) == 0 ||
+    strcmp("*", operator) == 0 ||
+    strcmp("/", operator) == 0
+  );
 }
