@@ -10,6 +10,7 @@ static char *copy_substring(char *dest, const char *src, size_t n);
 static bool is_operand(const char *token);
 static bool is_operator(const char *token);
 static int precedence_of(const char *operator);
+static bool stack_takes_precedence(const Stack *stack, const char *operator);
 
 int infix_to_postfix(char *postfix, const char *infix) {
   if (postfix == NULL || infix == NULL) {
@@ -27,10 +28,7 @@ int infix_to_postfix(char *postfix, const char *infix) {
     if (is_operand(token)) {
       strcat(postfix, token);
     } else if (is_operator(token)) {
-      if (
-        !is_empty(stack) &&
-        precedence_of(peek(stack)) >= precedence_of(token)
-      ) {
+      if (stack_takes_precedence(stack, token)) {
         char operator[2];
         pop(operator, &stack);
         strcat(postfix, operator);
@@ -99,4 +97,13 @@ static int precedence_of(const char *operator) {
   } else {
     return 0;
   }
+}
+
+static bool stack_takes_precedence(const Stack *stack, const char *operator) {
+  assert(operator != NULL);
+
+  return (
+    !is_empty(stack) &&
+    precedence_of(peek(stack)) >= precedence_of(operator)
+  );
 }
