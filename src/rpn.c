@@ -1,8 +1,11 @@
 #include "src/rpn.h"
 
+#include <assert.h>
 #include <string.h>
 
 #include "src/stack.h"
+
+static char *copy_substring(char *dest, const char *src, size_t n);
 
 int infix_to_postfix(char *postfix, const char *infix) {
   if (postfix == NULL || infix == NULL) {
@@ -15,8 +18,7 @@ int infix_to_postfix(char *postfix, const char *infix) {
 
   for (size_t i = 0; i < strlen(infix); i += 1) {
     char token[2];
-    strncpy(token, infix + i, 1);
-    token[1] = '\0';
+    copy_substring(token, infix + i, 1);
 
     if (
       strcmp("a", token) == 0 ||
@@ -53,4 +55,15 @@ int postfix_to_infix(char *infix, const char *postfix) {
   }
 
   return RPN_SUCCESS;
+}
+
+static char *copy_substring(char *dest, const char *src, size_t n) {
+  assert(dest != NULL);
+  assert(src != NULL);
+  assert(n <= strlen(src));
+
+  strncpy(dest, src, n);
+  dest[n] = '\0';
+
+  return dest;
 }
