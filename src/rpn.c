@@ -35,10 +35,10 @@ int infix_to_postfix(char *postfix, const char *infix) {
       }
 
       push(&stack, token);
-    } else if (strcmp("(", token) == 0) {
+    } else if (is_opening_paren(token)) {
       push(&stack, token);
     } else if (strcmp(")", token) == 0) {
-      while (strcmp("(", peek(stack)) != 0) {
+      while (!is_opening_paren(peek(stack))) {
         char operator[2];
         pop(operator, &stack);
         strcat(postfix, operator);
