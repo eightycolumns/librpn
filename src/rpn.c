@@ -26,7 +26,9 @@ int infix_to_postfix(char *postfix, const char *infix) {
       strcat(postfix, token);
     } else if (
       strcmp("+", token) == 0 ||
-      strcmp("-", token) == 0
+      strcmp("-", token) == 0 ||
+      strcmp("*", token) == 0 ||
+      strcmp("/", token) == 0
     ) {
       if (!is_empty(stack)) {
         char operator[2];
