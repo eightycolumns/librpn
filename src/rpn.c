@@ -35,6 +35,17 @@ int infix_to_postfix(char *postfix, const char *infix) {
       }
 
       push(&stack, token);
+    } else if (strcmp("(", token) == 0) {
+      push(&stack, token);
+    } else if (strcmp(")", token) == 0) {
+      while (strcmp("(", peek(stack)) != 0) {
+        char operator[2];
+        pop(operator, &stack);
+        strcat(postfix, operator);
+      }
+
+      char opening_paren[2];
+      pop(opening_paren, &stack);
     }
   }
 
