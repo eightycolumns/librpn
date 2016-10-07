@@ -83,14 +83,17 @@ static bool is_operator(const char *token) {
     strcmp("+", token) == 0 ||
     strcmp("-", token) == 0 ||
     strcmp("*", token) == 0 ||
-    strcmp("/", token) == 0
+    strcmp("/", token) == 0 ||
+    strcmp("^", token) == 0
   );
 }
 
 static int precedence_of(const char *operator) {
   assert(operator != NULL);
 
-  if (strcmp("*", operator) == 0 || strcmp("/", operator) == 0) {
+  if (strcmp("^", operator) == 0) {
+    return 3;
+  } else if (strcmp("*", operator) == 0 || strcmp("/", operator) == 0) {
     return 2;
   } else if (strcmp("+", operator) == 0 || strcmp("-", operator) == 0) {
     return 1;
@@ -102,8 +105,13 @@ static int precedence_of(const char *operator) {
 static bool stack_takes_precedence(const Stack *stack, const char *operator) {
   assert(operator != NULL);
 
-  return (
-    !is_empty(stack) &&
-    precedence_of(peek(stack)) >= precedence_of(operator)
-  );
+  if (!is_empty(stack) && strcmp("^", operator) != 0) {
+    return precedence_of(peek(stack)) >= precedence_of(operator);
+  }
+
+  if (!is_empty(stack) && strcmp("^", operator) == 0) {
+    return precedence_of(peek(stack)) > precedence_of(operator);
+  }
+
+  return false;
 }
