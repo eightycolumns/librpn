@@ -8,6 +8,7 @@
 
 static char *copy_substring(char *dest, const char *src, size_t n);
 static bool is_operand(const char *token);
+static bool is_operator(const char *token);
 
 int infix_to_postfix(char *postfix, const char *infix) {
   if (postfix == NULL || infix == NULL) {
@@ -24,12 +25,7 @@ int infix_to_postfix(char *postfix, const char *infix) {
 
     if (is_operand(token)) {
       strcat(postfix, token);
-    } else if (
-      strcmp("+", token) == 0 ||
-      strcmp("-", token) == 0 ||
-      strcmp("*", token) == 0 ||
-      strcmp("/", token) == 0
-    ) {
+    } else if (is_operator(token)) {
       if (!is_empty(stack)) {
         char operator[2];
         pop(operator, &stack);
@@ -73,5 +69,16 @@ static bool is_operand(const char *token) {
     strcmp("a", token) == 0 ||
     strcmp("b", token) == 0 ||
     strcmp("c", token) == 0
+  );
+}
+
+static bool is_operator(const char *token) {
+  assert(token != NULL);
+
+  return (
+    strcmp("+", token) == 0 ||
+    strcmp("-", token) == 0 ||
+    strcmp("*", token) == 0 ||
+    strcmp("/", token) == 0
   );
 }
