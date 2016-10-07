@@ -5,10 +5,9 @@
 #include <string.h>
 
 #include "src/stack.h"
+#include "src/token.h"
 #include "src/util.h"
 
-static bool is_operand(const char *token);
-static bool is_operator(const char *token);
 static int precedence_of(const char *operator);
 static bool stack_takes_precedence(const Stack *stack, const char *operator);
 static bool is_left_associative(const char *operator);
@@ -55,31 +54,6 @@ int postfix_to_infix(char *infix, const char *postfix) {
   }
 
   return RPN_SUCCESS;
-}
-
-static bool is_operand(const char *token) {
-  assert(token != NULL);
-
-  return (
-    strcmp("a", token) == 0 ||
-    strcmp("b", token) == 0 ||
-    strcmp("c", token) == 0 ||
-    strcmp("d", token) == 0 ||
-    strcmp("e", token) == 0 ||
-    strcmp("f", token) == 0
-  );
-}
-
-static bool is_operator(const char *token) {
-  assert(token != NULL);
-
-  return (
-    strcmp("+", token) == 0 ||
-    strcmp("-", token) == 0 ||
-    strcmp("*", token) == 0 ||
-    strcmp("/", token) == 0 ||
-    strcmp("^", token) == 0
-  );
 }
 
 static int precedence_of(const char *operator) {
