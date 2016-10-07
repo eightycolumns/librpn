@@ -34,9 +34,13 @@ int infix_to_postfix(char *postfix, const char *infix) {
         strcat(postfix, operator);
       }
 
-      push(&stack, token);
+      if (push(&stack, token) == NULL) {
+        return RPN_MEMORY_ALLOCATION_ERROR;
+      }
     } else if (is_opening_paren(token)) {
-      push(&stack, token);
+      if (push(&stack, token) == NULL) {
+        return RPN_MEMORY_ALLOCATION_ERROR;
+      }
     } else if (is_closing_paren(token)) {
       while (!is_opening_paren(peek(stack))) {
         char operator[2];

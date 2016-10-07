@@ -10,17 +10,28 @@ struct node {
   struct node *next_node;
 };
 
-void push(struct node **top_node, const char *string) {
+struct node *push(struct node **top_node, const char *string) {
   assert(top_node != NULL);
   assert(string != NULL);
 
   struct node *new_node = malloc(sizeof(struct node));
+
+  if (new_node == NULL) {
+    return NULL;
+  }
+
   new_node->string = malloc(strlen(string) + 1);
+
+  if (new_node->string == NULL) {
+    return NULL;
+  }
 
   strcpy(new_node->string, string);
   new_node->next_node = *top_node;
 
   *top_node = new_node;
+
+  return *top_node;
 }
 
 char *pop(char *string, struct node **top_node) {
