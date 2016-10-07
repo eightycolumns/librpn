@@ -26,3 +26,8 @@ bool is_opening_paren(const char *token) {
   assert(token != NULL);
   return strcmp("(", token) == 0;
 }
+
+bool is_closing_paren(const char *token) {
+  assert(token != NULL);
+  return strcmp(")", token) == 0;
+}
