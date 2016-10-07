@@ -6,9 +6,10 @@
 
 #include "src/rpn.h"
 
-START_TEST(test_01) {
-  char input[] = "a+b-c";
-  char expected_output[] = "ab+c-";
+static void test_infix_to_postfix(
+  const char *expected_output,
+  const char *input
+) {
   char actual_output[strlen(expected_output) + 1];
 
   infix_to_postfix(actual_output, input);
@@ -18,20 +19,14 @@ START_TEST(test_01) {
     "Input \"%s\". Expected output \"%s\", got \"%s\".",
     input, expected_output, actual_output
   );
+}
+
+START_TEST(test_01) {
+  test_infix_to_postfix("ab+c-", "a+b-c");
 } END_TEST
 
 START_TEST(test_02) {
-  char input[] = "a-b+c";
-  char expected_output[] = "ab-c+";
-  char actual_output[strlen(expected_output) + 1];
-
-  infix_to_postfix(actual_output, input);
-
-  ck_assert_msg(
-    strcmp(expected_output, actual_output) == 0,
-    "Input \"%s\". Expected output \"%s\", got \"%s\".",
-    input, expected_output, actual_output
-  );
+  test_infix_to_postfix("ab-c+", "a-b+c");
 } END_TEST
 
 TCase *infix_to_postfix_tcase(void) {
