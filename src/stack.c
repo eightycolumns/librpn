@@ -64,3 +64,12 @@ char *peek(const struct node *top_node) {
 bool is_empty(const struct node *top_node) {
   return top_node == NULL;
 }
+
+void clear(struct node **top_node) {
+  assert(top_node != NULL);
+
+  while (*top_node != NULL) {
+    char discard[strlen(peek(*top_node)) + 1];
+    pop(discard, top_node);
+  }
+}

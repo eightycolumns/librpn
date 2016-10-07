@@ -35,10 +35,12 @@ int infix_to_postfix(char *postfix, const char *infix) {
       }
 
       if (push(&stack, token) == NULL) {
+        clear(&stack);
         return RPN_MEMORY_ALLOCATION_ERROR;
       }
     } else if (is_opening_paren(token)) {
       if (push(&stack, token) == NULL) {
+        clear(&stack);
         return RPN_MEMORY_ALLOCATION_ERROR;
       }
     } else if (is_closing_paren(token)) {
