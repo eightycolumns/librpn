@@ -5,8 +5,8 @@
 #include <string.h>
 
 #include "src/stack.h"
+#include "src/util.h"
 
-static char *copy_substring(char *dest, const char *src, size_t n);
 static bool is_operand(const char *token);
 static bool is_operator(const char *token);
 static int precedence_of(const char *operator);
@@ -55,17 +55,6 @@ int postfix_to_infix(char *infix, const char *postfix) {
   }
 
   return RPN_SUCCESS;
-}
-
-static char *copy_substring(char *dest, const char *src, size_t n) {
-  assert(dest != NULL);
-  assert(src != NULL);
-  assert(n <= strlen(src));
-
-  strncpy(dest, src, n);
-  dest[n] = '\0';
-
-  return dest;
 }
 
 static bool is_operand(const char *token) {
