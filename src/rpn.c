@@ -1,11 +1,13 @@
 #include "src/rpn.h"
 
 #include <assert.h>
+#include <stdbool.h>
 #include <string.h>
 
 #include "src/stack.h"
 
 static char *copy_substring(char *dest, const char *src, size_t n);
+static bool is_operand(const char *token);
 
 int infix_to_postfix(char *postfix, const char *infix) {
   if (postfix == NULL || infix == NULL) {
@@ -20,11 +22,7 @@ int infix_to_postfix(char *postfix, const char *infix) {
     char token[2];
     copy_substring(token, infix + i, 1);
 
-    if (
-      strcmp("a", token) == 0 ||
-      strcmp("b", token) == 0 ||
-      strcmp("c", token) == 0
-    ) {
+    if (is_operand(token)) {
       strcat(postfix, token);
     } else if (
       strcmp("+", token) == 0 ||
@@ -66,4 +64,14 @@ static char *copy_substring(char *dest, const char *src, size_t n) {
   dest[n] = '\0';
 
   return dest;
+}
+
+static bool is_operand(const char *token) {
+  assert(token != NULL);
+
+  return (
+    strcmp("a", token) == 0 ||
+    strcmp("b", token) == 0 ||
+    strcmp("c", token) == 0
+  );
 }
