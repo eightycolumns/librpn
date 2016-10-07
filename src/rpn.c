@@ -30,7 +30,7 @@ int infix_to_postfix(char *postfix, const char *infix) {
     if (is_operand(token)) {
       strcat(postfix, token);
     } else if (is_operator(token)) {
-      if (stack_takes_precedence(stack, token)) {
+      while (stack_takes_precedence(stack, token)) {
         char operator[2];
         pop(operator, &stack);
         strcat(postfix, operator);

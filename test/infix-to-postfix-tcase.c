@@ -53,6 +53,10 @@ START_TEST(test_08) {
   test_infix_to_postfix("ab^c*d/e+f-", "a^b*c/d+e-f");
 } END_TEST
 
+START_TEST(test_09) {
+  test_infix_to_postfix("abcd^*e*+f+", "a+b*c^d*e+f");
+} END_TEST
+
 TCase *infix_to_postfix_tcase(void) {
   TCase *infix_to_postfix_tcase = tcase_create("Infix to Postfix");
 
@@ -64,6 +68,7 @@ TCase *infix_to_postfix_tcase(void) {
   tcase_add_test(infix_to_postfix_tcase, test_06);
   tcase_add_test(infix_to_postfix_tcase, test_07);
   tcase_add_test(infix_to_postfix_tcase, test_08);
+  tcase_add_test(infix_to_postfix_tcase, test_09);
 
   return infix_to_postfix_tcase;
 }
