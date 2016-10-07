@@ -74,7 +74,10 @@ static bool is_operand(const char *token) {
   return (
     strcmp("a", token) == 0 ||
     strcmp("b", token) == 0 ||
-    strcmp("c", token) == 0
+    strcmp("c", token) == 0 ||
+    strcmp("d", token) == 0 ||
+    strcmp("e", token) == 0 ||
+    strcmp("f", token) == 0
   );
 }
 
