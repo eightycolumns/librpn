@@ -4,14 +4,13 @@
 #include <stdbool.h>
 #include <string.h>
 
+#include "src/associativity.h"
 #include "src/precedence.h"
 #include "src/stack.h"
 #include "src/token.h"
 #include "src/util.h"
 
 static bool stack_takes_precedence(const Stack *stack, const char *operator);
-static bool is_left_associative(const char *operator);
-static bool is_right_associative(const char *operator);
 
 int infix_to_postfix(char *postfix, const char *infix) {
   if (postfix == NULL || infix == NULL) {
@@ -68,20 +67,4 @@ static bool stack_takes_precedence(const Stack *stack, const char *operator) {
   }
 
   return false;
-}
-
-static bool is_left_associative(const char *operator) {
-  assert(operator != NULL);
-
-  return (
-    strcmp("+", operator) == 0 ||
-    strcmp("-", operator) == 0 ||
-    strcmp("*", operator) == 0 ||
-    strcmp("/", operator) == 0
-  );
-}
-
-static bool is_right_associative(const char *operator) {
-  assert(operator != NULL);
-  return strcmp("^", operator) == 0;
 }
