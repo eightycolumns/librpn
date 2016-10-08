@@ -12,6 +12,7 @@
 
 static bool stack_takes_precedence(const Stack *stack, const char *operator);
 static bool is_expression(const char *operand);
+static int lowest_operator_precedence_in(const char *expression);
 
 int infix_to_postfix(char *postfix, const char *infix) {
   if (postfix == NULL || infix == NULL) {
@@ -90,74 +91,26 @@ int postfix_to_infix(char *infix, const char *postfix) {
 
       strcpy(infix, "");
 
-      if (is_expression(l_operand)) {
-        int low = 0;
-
-        int inside_parens = 0;
-
-        for (size_t i = 0; i < strlen(l_operand); i += 1) {
-          char token[2];
-          copy_substring(token, l_operand + i, 1);
-
-          if (is_opening_paren(token)) {
-            inside_parens += 1;
-          } else if (is_closing_paren(token)) {
-            inside_parens -= 1;
-          }
-
-          if (inside_parens) {
-            continue;
-          }
-
-          if (is_operator(token) && (low == 0 || precedence_of(token) < low)) {
-            low = precedence_of(token);
-          }
-        }
-
-        if (low < precedence_of(token)) {
-          strcat(infix, "(");
-          strcat(infix, l_operand);
-          strcat(infix, ")");
-        } else {
-          strcat(infix, l_operand);
-        }
+      if (
+        is_expression(l_operand) &&
+        lowest_operator_precedence_in(l_operand) < precedence_of(token)
+      ) {
+        strcat(infix, "(");
+        strcat(infix, l_operand);
+        strcat(infix, ")");
       } else {
         strcat(infix, l_operand);
       }
 
       strcat(infix, token);
 
-      if (is_expression(r_operand)) {
-        int low = 0;
-
-        int inside_parens = 0;
-
-        for (size_t i = 0; i < strlen(r_operand); i += 1) {
-          char token[2];
-          copy_substring(token, r_operand + i, 1);
-
-          if (is_opening_paren(token)) {
-            inside_parens += 1;
-          } else if (is_closing_paren(token)) {
-            inside_parens -= 1;
-          }
-
-          if (inside_parens) {
-            continue;
-          }
-
-          if (is_operator(token) && (low == 0 || precedence_of(token) < low)) {
-            low = precedence_of(token);
-          }
-        }
-
-        if (low < precedence_of(token)) {
-          strcat(infix, "(");
-          strcat(infix, r_operand);
-          strcat(infix, ")");
-        } else {
-          strcat(infix, r_operand);
-        }
+      if (
+        is_expression(r_operand) &&
+        lowest_operator_precedence_in(r_operand) < precedence_of(token)
+      ) {
+        strcat(infix, "(");
+        strcat(infix, r_operand);
+        strcat(infix, ")");
       } else {
         strcat(infix, r_operand);
       }
@@ -191,4 +144,33 @@ static bool stack_takes_precedence(const Stack *stack, const char *operator) {
 static bool is_expression(const char *operand) {
   assert(operand != NULL);
   return !is_operand(operand);
+}
+
+static int lowest_operator_precedence_in(const char *expression) {
+  assert(expression != NULL);
+
+  int low = 0;
+
+  int inside_parens = 0;
+
+  for (size_t i = 0; i < strlen(expression); i += 1) {
+    char token[2];
+    copy_substring(token, expression + i, 1);
+
+    if (is_opening_paren(token)) {
+      inside_parens += 1;
+    } else if (is_closing_paren(token)) {
+      inside_parens -= 1;
+    }
+
+    if (inside_parens) {
+      continue;
+    }
+
+    if (is_operator(token) && (low == 0 || precedence_of(token) < low)) {
+      low = precedence_of(token);
+    }
+  }
+
+  return low;
 }
