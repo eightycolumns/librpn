@@ -160,10 +160,10 @@ static bool r_operand_needs_parens(const char *operand, const char *operator) {
   assert(operator != NULL);
 
   if (is_expression(operand) && is_left_associative(operator)) {
-    if (is_nonassociative(operator)) {
-      return lowest_operator_precedence_in(operand) <= precedence_of(operator);
-    } else {
+    if (is_associative(operator)) {
       return lowest_operator_precedence_in(operand) < precedence_of(operator);
+    } else {
+      return lowest_operator_precedence_in(operand) <= precedence_of(operator);
     }
   }
 
