@@ -85,6 +85,10 @@ START_TEST(test_16) {
   test_postfix_to_infix("(a^b)^c", "ab^c^");
 } END_TEST
 
+START_TEST(test_17) {
+  test_postfix_to_infix("a-(b-c)", "abc--");
+} END_TEST
+
 TCase *postfix_to_infix_tcase(void) {
   TCase *postfix_to_infix_tcase = tcase_create("Postfix to Infix");
 
@@ -104,6 +108,7 @@ TCase *postfix_to_infix_tcase(void) {
   tcase_add_test(postfix_to_infix_tcase, test_14);
   tcase_add_test(postfix_to_infix_tcase, test_15);
   tcase_add_test(postfix_to_infix_tcase, test_16);
+  tcase_add_test(postfix_to_infix_tcase, test_17);
 
   return postfix_to_infix_tcase;
 }

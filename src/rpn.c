@@ -159,10 +159,19 @@ static bool r_operand_needs_parens(const char *operand, const char *operator) {
   assert(operand != NULL);
   assert(operator != NULL);
 
-  return (
-    is_expression(operand) &&
-    lowest_operator_precedence_in(operand) < precedence_of(operator)
-  );
+  if (is_expression(operand) && is_left_associative(operator)) {
+    if (strcmp("-", operator) == 0) {
+      return lowest_operator_precedence_in(operand) <= precedence_of(operator);
+    } else {
+      return lowest_operator_precedence_in(operand) < precedence_of(operator);
+    }
+  }
+
+  if (is_expression(operand) && is_right_associative(operator)) {
+    return lowest_operator_precedence_in(operand) < precedence_of(operator);
+  }
+
+  return false;
 }
 
 static bool is_expression(const char *operand) {
