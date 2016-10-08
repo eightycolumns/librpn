@@ -16,6 +16,7 @@ static bool r_operand_needs_parens(const char *operand, const char *operator);
 static bool is_expression(const char *operand);
 static char *parenthesize(char *dest, const char *src);
 static bool is_valid_infix_expression(const char *infix);
+static bool is_valid_token(const char *token);
 
 int infix_to_postfix(char *postfix, const char *infix) {
   if (postfix == NULL || infix == NULL) {
@@ -203,15 +204,21 @@ static bool is_valid_infix_expression(const char *infix) {
     char token[2];
     copy_substring(token, infix + i, 1);
 
-    if (
-      !is_operand(token) &&
-      !is_operator(token) &&
-      !is_opening_paren(token) &&
-      !is_closing_paren(token)
-    ) {
+    if (!is_valid_token(token)) {
       return false;
     }
   }
 
   return true;
+}
+
+static bool is_valid_token(const char *token) {
+  assert(token != NULL);
+
+  return (
+    is_operand(token) ||
+    is_operator(token) ||
+    is_opening_paren(token) ||
+    is_closing_paren(token)
+  );
 }
