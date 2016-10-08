@@ -11,7 +11,8 @@
 #include "src/util.h"
 
 static bool stack_takes_precedence(const Stack *stack, const char *operator);
-static bool operand_needs_parens(const char *operand, const char *operator);
+static bool l_operand_needs_parens(const char *operand, const char *operator);
+static bool r_operand_needs_parens(const char *operand, const char *operator);
 static bool is_expression(const char *operand);
 static int lowest_operator_precedence_in(const char *expression);
 static char *parenthesize(char *dest, const char *src);
@@ -95,7 +96,7 @@ int postfix_to_infix(char *infix, const char *postfix) {
 
       size_t room_for_parens = 2;
 
-      if (operand_needs_parens(l_operand, token)) {
+      if (l_operand_needs_parens(l_operand, token)) {
         char l_operand_parenthesized[strlen(l_operand) + room_for_parens + 1];
         parenthesize(l_operand_parenthesized, l_operand);
         strcat(infix, l_operand_parenthesized);
@@ -105,7 +106,7 @@ int postfix_to_infix(char *infix, const char *postfix) {
 
       strcat(infix, token);
 
-      if (operand_needs_parens(r_operand, token)) {
+      if (r_operand_needs_parens(r_operand, token)) {
         char r_operand_parenthesized[strlen(r_operand) + room_for_parens + 1];
         parenthesize(r_operand_parenthesized, r_operand);
         strcat(infix, r_operand_parenthesized);
@@ -139,7 +140,22 @@ static bool stack_takes_precedence(const Stack *stack, const char *operator) {
   return false;
 }
 
-static bool operand_needs_parens(const char *operand, const char *operator) {
+static bool l_operand_needs_parens(const char *operand, const char *operator) {
+  assert(operand != NULL);
+  assert(operator != NULL);
+
+  if (is_expression(operand) && is_left_associative(operator)) {
+    return lowest_operator_precedence_in(operand) < precedence_of(operator);
+  }
+
+  if (is_expression(operand) && is_right_associative(operator)) {
+    return lowest_operator_precedence_in(operand) <= precedence_of(operator);
+  }
+
+  return false;
+}
+
+static bool r_operand_needs_parens(const char *operand, const char *operator) {
   assert(operand != NULL);
   assert(operator != NULL);
 
