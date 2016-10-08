@@ -11,6 +11,7 @@
 #include "src/util.h"
 
 static bool stack_takes_precedence(const Stack *stack, const char *operator);
+static bool operand_needs_parens(const char *operand, const char *operator);
 static bool is_expression(const char *operand);
 static int lowest_operator_precedence_in(const char *expression);
 
@@ -91,10 +92,7 @@ int postfix_to_infix(char *infix, const char *postfix) {
 
       strcpy(infix, "");
 
-      if (
-        is_expression(l_operand) &&
-        lowest_operator_precedence_in(l_operand) < precedence_of(token)
-      ) {
+      if (operand_needs_parens(l_operand, token)) {
         strcat(infix, "(");
         strcat(infix, l_operand);
         strcat(infix, ")");
@@ -104,10 +102,7 @@ int postfix_to_infix(char *infix, const char *postfix) {
 
       strcat(infix, token);
 
-      if (
-        is_expression(r_operand) &&
-        lowest_operator_precedence_in(r_operand) < precedence_of(token)
-      ) {
+      if (operand_needs_parens(r_operand, token)) {
         strcat(infix, "(");
         strcat(infix, r_operand);
         strcat(infix, ")");
@@ -139,6 +134,16 @@ static bool stack_takes_precedence(const Stack *stack, const char *operator) {
   }
 
   return false;
+}
+
+static bool operand_needs_parens(const char *operand, const char *operator) {
+  assert(operand != NULL);
+  assert(operator != NULL);
+
+  return (
+    is_expression(operand) &&
+    lowest_operator_precedence_in(operand) < precedence_of(operator)
+  );
 }
 
 static bool is_expression(const char *operand) {
