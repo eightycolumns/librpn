@@ -11,6 +11,7 @@
 #include "src/util.h"
 
 static bool stack_takes_precedence(const Stack *stack, const char *operator);
+static bool is_expression(const char *operand);
 
 int infix_to_postfix(char *postfix, const char *infix) {
   if (postfix == NULL || infix == NULL) {
@@ -89,7 +90,7 @@ int postfix_to_infix(char *infix, const char *postfix) {
 
       strcpy(infix, "");
 
-      if (!is_operand(l_operand)) {
+      if (is_expression(l_operand)) {
         int low = 0;
 
         int inside_parens = 0;
@@ -126,7 +127,7 @@ int postfix_to_infix(char *infix, const char *postfix) {
 
       strcat(infix, token);
 
-      if (!is_operand(r_operand)) {
+      if (is_expression(r_operand)) {
         int low = 0;
 
         int inside_parens = 0;
@@ -185,4 +186,9 @@ static bool stack_takes_precedence(const Stack *stack, const char *operator) {
   }
 
   return false;
+}
+
+static bool is_expression(const char *operand) {
+  assert(operand != NULL);
+  return !is_operand(operand);
 }
