@@ -93,8 +93,10 @@ int postfix_to_infix(char *infix, const char *postfix) {
 
       strcpy(infix, "");
 
+      size_t room_for_parens = 2;
+
       if (operand_needs_parens(l_operand, token)) {
-        char l_operand_parenthesized[strlen(l_operand) + 3];
+        char l_operand_parenthesized[strlen(l_operand) + room_for_parens + 1];
         parenthesize(l_operand_parenthesized, l_operand);
         strcat(infix, l_operand_parenthesized);
       } else {
@@ -104,7 +106,7 @@ int postfix_to_infix(char *infix, const char *postfix) {
       strcat(infix, token);
 
       if (operand_needs_parens(r_operand, token)) {
-        char r_operand_parenthesized[strlen(r_operand) + 3];
+        char r_operand_parenthesized[strlen(r_operand) + room_for_parens + 1];
         parenthesize(r_operand_parenthesized, r_operand);
         strcat(infix, r_operand_parenthesized);
       } else {
