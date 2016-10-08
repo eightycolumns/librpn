@@ -14,6 +14,7 @@ static bool stack_takes_precedence(const Stack *stack, const char *operator);
 static bool operand_needs_parens(const char *operand, const char *operator);
 static bool is_expression(const char *operand);
 static int lowest_operator_precedence_in(const char *expression);
+static char *parenthesize(char *dest, const char *src);
 
 int infix_to_postfix(char *postfix, const char *infix) {
   if (postfix == NULL || infix == NULL) {
@@ -93,9 +94,9 @@ int postfix_to_infix(char *infix, const char *postfix) {
       strcpy(infix, "");
 
       if (operand_needs_parens(l_operand, token)) {
-        strcat(infix, "(");
-        strcat(infix, l_operand);
-        strcat(infix, ")");
+        char l_operand_parenthesized[strlen(l_operand) + 3];
+        parenthesize(l_operand_parenthesized, l_operand);
+        strcat(infix, l_operand_parenthesized);
       } else {
         strcat(infix, l_operand);
       }
@@ -103,9 +104,9 @@ int postfix_to_infix(char *infix, const char *postfix) {
       strcat(infix, token);
 
       if (operand_needs_parens(r_operand, token)) {
-        strcat(infix, "(");
-        strcat(infix, r_operand);
-        strcat(infix, ")");
+        char r_operand_parenthesized[strlen(r_operand) + 3];
+        parenthesize(r_operand_parenthesized, r_operand);
+        strcat(infix, r_operand_parenthesized);
       } else {
         strcat(infix, r_operand);
       }
@@ -178,4 +179,17 @@ static int lowest_operator_precedence_in(const char *expression) {
   }
 
   return low;
+}
+
+static char *parenthesize(char *dest, const char *src) {
+  assert(dest != NULL);
+  assert(src != NULL);
+
+  strcpy(dest, "");
+
+  strcat(dest, "(");
+  strcat(dest, src);
+  strcat(dest, ")");
+
+  return dest;
 }
