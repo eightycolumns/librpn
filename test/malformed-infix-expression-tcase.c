@@ -97,6 +97,10 @@ START_TEST(test_20) {
   test_for_malformed_expression_error("((a+b)c)^d");
 } END_TEST
 
+START_TEST(test_21) {
+  test_for_malformed_expression_error("");
+} END_TEST
+
 TCase *malformed_infix_expression_tcase(void) {
   TCase *malformed_infix_expression_tcase = tcase_create(
     "Malformed Infix Expression"
@@ -122,6 +126,7 @@ TCase *malformed_infix_expression_tcase(void) {
   tcase_add_test(malformed_infix_expression_tcase, test_18);
   tcase_add_test(malformed_infix_expression_tcase, test_19);
   tcase_add_test(malformed_infix_expression_tcase, test_20);
+  tcase_add_test(malformed_infix_expression_tcase, test_21);
 
   return malformed_infix_expression_tcase;
 }

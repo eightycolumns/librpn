@@ -16,6 +16,10 @@ static bool is_valid_operator_placement(const char *infix, size_t i);
 bool is_valid_infix_expression(const char *infix) {
   assert(infix != NULL);
 
+  if (strcmp("", infix) == 0) {
+    return false;
+  }
+
   for (size_t i = 0; i < strlen(infix); i += 1) {
     char token[2];
     copy_substring(token, infix + i, 1);
