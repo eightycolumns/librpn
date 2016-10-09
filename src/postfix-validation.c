@@ -1,6 +1,7 @@
 #include "src/postfix-validation.h"
 
 #include <assert.h>
+#include <ctype.h>
 #include <stdbool.h>
 #include <string.h>
 
@@ -18,6 +19,10 @@ bool is_valid_postfix_expression(const char *postfix) {
   int n_operators = 0;
 
   for (size_t i = 0; i < strlen(postfix); i += 1) {
+    if (isspace(postfix[i])) {
+      continue;
+    }
+
     char token[2];
     copy_substring(token, postfix + i, 1);
 
