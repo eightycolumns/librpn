@@ -232,6 +232,13 @@ static bool is_valid_token(const char *infix, size_t i) {
   if (is_operator(token)) {
     if (i == 0 || i == strlen(infix) - 1) {
       return false;
+    } else {
+      char prev_token[2];
+      copy_substring(prev_token, infix + i - 1, 1);
+
+      if (is_operator(prev_token)) {
+        return false;
+      }
     }
 
     return true;
