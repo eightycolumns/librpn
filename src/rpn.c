@@ -16,6 +16,7 @@ static bool l_operand_needs_parens(const char *operand, const char *operator);
 static bool r_operand_needs_parens(const char *operand, const char *operator);
 static bool is_expression(const char *operand);
 static char *parenthesize(char *dest, const char *src);
+static bool is_valid_postfix_expression(const char *postfix);
 
 int infix_to_postfix(char *postfix, const char *infix) {
   if (postfix == NULL || infix == NULL) {
@@ -76,6 +77,10 @@ int infix_to_postfix(char *postfix, const char *infix) {
 int postfix_to_infix(char *infix, const char *postfix) {
   if (infix == NULL || postfix == NULL) {
     return RPN_NULL_POINTER_ERROR;
+  }
+
+  if (!is_valid_postfix_expression(postfix)) {
+    return RPN_MALFORMED_EXPRESSION_ERROR;
   }
 
   Stack *stack = NULL;
@@ -194,4 +199,24 @@ static char *parenthesize(char *dest, const char *src) {
   strcat(dest, ")");
 
   return dest;
+}
+
+static bool is_valid_postfix_expression(const char *postfix) {
+  assert(postfix != NULL);
+
+  int n_operands = 0;
+  int n_operators = 0;
+
+  for (size_t i = 0; i < strlen(postfix); i += 1) {
+    char token[2];
+    copy_substring(token, postfix + i, 1);
+
+    if (is_operand(token)) {
+      n_operands += 1;
+    } else if (is_operator(token)) {
+      n_operators += 1;
+    }
+  }
+
+  return n_operands - 1 == n_operators;
 }
