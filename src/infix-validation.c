@@ -1,6 +1,7 @@
 #include "src/infix-validation.h"
 
 #include <assert.h>
+#include <ctype.h>
 #include <stdbool.h>
 #include <string.h>
 
@@ -21,6 +22,10 @@ bool is_valid_infix_expression(const char *infix) {
   }
 
   for (size_t i = 0; i < strlen(infix); i += 1) {
+    if (isspace(infix[i])) {
+      continue;
+    }
+
     char token[2];
     copy_substring(token, infix + i, 1);
 
