@@ -1,6 +1,7 @@
 #include "src/util.h"
 
 #include <assert.h>
+#include <ctype.h>
 #include <stdbool.h>
 #include <string.h>
 
@@ -18,4 +19,20 @@ char *copy_substring(char *dest, const char *src, size_t n) {
 bool is_empty_string(const char *string) {
   assert(string != NULL);
   return strcmp("", string) == 0;
+}
+
+bool is_entirely_whitespace(const char *string) {
+  assert(string != NULL);
+
+  if (is_empty_string(string)) {
+    return false;
+  }
+
+  for (size_t i = 0; i < strlen(string); i += 1) {
+    if (!isspace(string[i])) {
+      return false;
+    }
+  }
+
+  return true;
 }

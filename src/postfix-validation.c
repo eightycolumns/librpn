@@ -1,7 +1,6 @@
 #include "src/postfix-validation.h"
 
 #include <assert.h>
-#include <ctype.h>
 #include <stdbool.h>
 #include <string.h>
 
@@ -11,19 +10,7 @@
 bool is_valid_postfix_expression(const char *postfix) {
   assert(postfix != NULL);
 
-  if (is_empty_string(postfix)) {
-    return false;
-  }
-
-  bool is_entirely_whitespace = true;
-
-  for (size_t i = 0; i < strlen(postfix); i += 1) {
-    if (!isspace(postfix[i])) {
-      is_entirely_whitespace = false;
-    }
-  }
-
-  if (is_entirely_whitespace) {
+  if (is_empty_string(postfix) || is_entirely_whitespace(postfix)) {
     return false;
   }
 
