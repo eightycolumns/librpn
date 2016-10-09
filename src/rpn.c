@@ -16,7 +16,7 @@ static bool stack_takes_precedence(const Stack *stack, const char *operator);
 static bool l_operand_needs_parens(const char *operand, const char *operator);
 static bool r_operand_needs_parens(const char *operand, const char *operator);
 static bool is_expression(const char *operand);
-static char *parenthesize(char *dest, const char *src);
+static char *parenthesize(char *operand);
 
 int infix_to_postfix(char *postfix, const char *infix) {
   if (postfix == NULL || infix == NULL) {
@@ -95,33 +95,27 @@ int postfix_to_infix(char *infix, const char *postfix) {
         return RPN_MEMORY_ALLOCATION_ERROR;
       }
     } else if (is_operator(token)) {
-      char r_operand[strlen(peek(stack)) + 1];
+      size_t room_for_parens = 2;
+
+      char r_operand[strlen(peek(stack)) + room_for_parens + 1];
       pop(r_operand, &stack);
 
-      char l_operand[strlen(peek(stack)) + 1];
+      if (r_operand_needs_parens(r_operand, token)) {
+        parenthesize(r_operand);
+      }
+
+      char l_operand[strlen(peek(stack)) + room_for_parens + 1];
       pop(l_operand, &stack);
+
+      if (l_operand_needs_parens(l_operand, token)) {
+        parenthesize(l_operand);
+      }
 
       strcpy(infix, "");
 
-      size_t room_for_parens = 2;
-
-      if (l_operand_needs_parens(l_operand, token)) {
-        char l_operand_parenthesized[strlen(l_operand) + room_for_parens + 1];
-        parenthesize(l_operand_parenthesized, l_operand);
-        strcat(infix, l_operand_parenthesized);
-      } else {
-        strcat(infix, l_operand);
-      }
-
+      strcat(infix, l_operand);
       strcat(infix, token);
-
-      if (r_operand_needs_parens(r_operand, token)) {
-        char r_operand_parenthesized[strlen(r_operand) + room_for_parens + 1];
-        parenthesize(r_operand_parenthesized, r_operand);
-        strcat(infix, r_operand_parenthesized);
-      } else {
-        strcat(infix, r_operand);
-      }
+      strcat(infix, r_operand);
 
       if (push(&stack, infix) == NULL) {
         clear(&stack);
@@ -188,15 +182,17 @@ static bool is_expression(const char *operand) {
   return !is_operand(operand);
 }
 
-static char *parenthesize(char *dest, const char *src) {
-  assert(dest != NULL);
-  assert(src != NULL);
+static char *parenthesize(char *operand) {
+  assert(operand != NULL);
 
-  strcpy(dest, "");
+  char temp[strlen(operand) + 1];
+  strcpy(temp, operand);
 
-  strcat(dest, "(");
-  strcat(dest, src);
-  strcat(dest, ")");
+  strcpy(operand, "");
 
-  return dest;
+  strcat(operand, "(");
+  strcat(operand, temp);
+  strcat(operand, ")");
+
+  return operand;
 }
