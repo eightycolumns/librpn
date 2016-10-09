@@ -109,6 +109,10 @@ START_TEST(test_23) {
   test_for_malformed_expression_error("a*()*d");
 } END_TEST
 
+START_TEST(test_24) {
+  test_for_malformed_expression_error("a*( )*d");
+} END_TEST
+
 TCase *malformed_infix_expression_tcase(void) {
   TCase *malformed_infix_expression_tcase = tcase_create(
     "Malformed Infix Expression"
@@ -137,6 +141,7 @@ TCase *malformed_infix_expression_tcase(void) {
   tcase_add_test(malformed_infix_expression_tcase, test_21);
   tcase_add_test(malformed_infix_expression_tcase, test_22);
   tcase_add_test(malformed_infix_expression_tcase, test_23);
+  tcase_add_test(malformed_infix_expression_tcase, test_24);
 
   return malformed_infix_expression_tcase;
 }
