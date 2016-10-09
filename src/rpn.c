@@ -215,6 +215,8 @@ static bool is_valid_postfix_expression(const char *postfix) {
       n_operands += 1;
     } else if (is_operator(token)) {
       n_operators += 1;
+    } else {
+      return false;
     }
 
     if (n_operands <= n_operators) {

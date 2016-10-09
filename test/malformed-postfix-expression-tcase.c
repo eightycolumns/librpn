@@ -37,6 +37,10 @@ START_TEST(test_05) {
   test_for_malformed_expression_error("a+bc+");
 } END_TEST
 
+START_TEST(test_06) {
+  test_for_malformed_expression_error("ab+c+?");
+} END_TEST
+
 TCase *malformed_postfix_expression_tcase(void) {
   TCase *malformed_postfix_expression_tcase = tcase_create(
     "Malformed Postfix Expression"
@@ -47,6 +51,7 @@ TCase *malformed_postfix_expression_tcase(void) {
   tcase_add_test(malformed_postfix_expression_tcase, test_03);
   tcase_add_test(malformed_postfix_expression_tcase, test_04);
   tcase_add_test(malformed_postfix_expression_tcase, test_05);
+  tcase_add_test(malformed_postfix_expression_tcase, test_06);
 
   return malformed_postfix_expression_tcase;
 }
