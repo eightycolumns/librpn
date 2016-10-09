@@ -31,3 +31,8 @@ bool is_closing_paren(const char *token) {
   assert(token != NULL);
   return strcmp(")", token) == 0;
 }
+
+bool is_whitespace(const char *token) {
+  assert(token != NULL);
+  return strlen(token) == 1 && isspace(token[0]);
+}
