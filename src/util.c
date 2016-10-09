@@ -1,6 +1,7 @@
 #include "src/util.h"
 
 #include <assert.h>
+#include <stdbool.h>
 #include <string.h>
 
 char *copy_substring(char *dest, const char *src, size_t n) {
@@ -12,4 +13,9 @@ char *copy_substring(char *dest, const char *src, size_t n) {
   dest[n] = '\0';
 
   return dest;
+}
+
+bool is_empty_string(const char *string) {
+  assert(string != NULL);
+  return strcmp("", string) == 0;
 }

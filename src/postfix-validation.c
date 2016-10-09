@@ -10,7 +10,7 @@
 bool is_valid_postfix_expression(const char *postfix) {
   assert(postfix != NULL);
 
-  if (strcmp("", postfix) == 0) {
+  if (is_empty_string(postfix)) {
     return false;
   }
 

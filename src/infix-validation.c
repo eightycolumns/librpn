@@ -16,7 +16,7 @@ static bool is_valid_operator_placement(const char *infix, size_t i);
 bool is_valid_infix_expression(const char *infix) {
   assert(infix != NULL);
 
-  if (strcmp("", infix) == 0) {
+  if (is_empty_string(infix)) {
     return false;
   }
 
