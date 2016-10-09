@@ -289,7 +289,7 @@ static bool is_valid_operand_placement(const char *infix, size_t i) {
     char prev_token[2];
     copy_substring(prev_token, infix + i - 1, 1);
 
-    if (is_operand(prev_token)) {
+    if (is_operand(prev_token) || is_closing_paren(prev_token)) {
       return false;
     }
   }
