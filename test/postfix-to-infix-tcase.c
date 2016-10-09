@@ -113,6 +113,10 @@ START_TEST(test_23) {
   test_postfix_to_infix("a+b+c", "abc++");
 } END_TEST
 
+START_TEST(test_24) {
+  test_postfix_to_infix("a*b*c", "abc**");
+} END_TEST
+
 TCase *postfix_to_infix_tcase(void) {
   TCase *postfix_to_infix_tcase = tcase_create("Postfix to Infix");
 
@@ -139,6 +143,7 @@ TCase *postfix_to_infix_tcase(void) {
   tcase_add_test(postfix_to_infix_tcase, test_21);
   tcase_add_test(postfix_to_infix_tcase, test_22);
   tcase_add_test(postfix_to_infix_tcase, test_23);
+  tcase_add_test(postfix_to_infix_tcase, test_24);
 
   return postfix_to_infix_tcase;
 }
