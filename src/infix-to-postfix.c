@@ -5,7 +5,7 @@
 #include <string.h>
 
 #include "src/associativity.h"
-#include "src/infix-validation.h"
+#include "src/is-valid-infix.h"
 #include "src/precedence.h"
 #include "src/stack.h"
 #include "src/token.h"
@@ -18,7 +18,7 @@ int infix_to_postfix(char *postfix, const char *infix) {
     return RPN_NULL_POINTER_ERROR;
   }
 
-  if (!is_valid_infix_expression(infix)) {
+  if (!is_valid_infix(infix)) {
     return RPN_MALFORMED_EXPRESSION_ERROR;
   }
 

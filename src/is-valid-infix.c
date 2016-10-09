@@ -1,4 +1,4 @@
-#include "src/infix-validation.h"
+#include "src/is-valid-infix.h"
 
 #include <assert.h>
 #include <stdbool.h>
@@ -13,7 +13,7 @@ static bool is_valid_token(const char *infix, size_t i);
 static bool is_valid_operand_placement(const char *infix, size_t i);
 static bool is_valid_operator_placement(const char *infix, size_t i);
 
-bool is_valid_infix_expression(const char *infix) {
+bool is_valid_infix(const char *infix) {
   assert(infix != NULL);
 
   if (is_empty_string(infix) || is_entirely_whitespace(infix)) {
@@ -56,7 +56,7 @@ static bool is_parenthesized_subexpression(const char *infix, size_t i) {
   char infix_substr[substr_length + 1];
   copy_substring(infix_substr, infix + substr_start, substr_length);
 
-  return is_valid_infix_expression(infix_substr);
+  return is_valid_infix(infix_substr);
 }
 
 static size_t find_closing_paren(const char *infix, size_t i) {

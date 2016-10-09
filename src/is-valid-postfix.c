@@ -1,4 +1,4 @@
-#include "src/postfix-validation.h"
+#include "src/is-valid-postfix.h"
 
 #include <assert.h>
 #include <stdbool.h>
@@ -7,7 +7,7 @@
 #include "src/token.h"
 #include "src/util.h"
 
-bool is_valid_postfix_expression(const char *postfix) {
+bool is_valid_postfix(const char *postfix) {
   assert(postfix != NULL);
 
   if (is_empty_string(postfix) || is_entirely_whitespace(postfix)) {
