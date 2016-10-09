@@ -12,7 +12,9 @@ objects = $(patsubst %.c,%.o,$(wildcard $(src_dir)/*.c))
 $(build_dir)/$(lib_filename): $(objects) | $(build_dir)
 	ar rcs $@ $^
 
-$(objects): %.o: %.h
+headers = $(wildcard $(src_dir)/*.h)
+
+$(objects): $(headers)
 
 $(build_dir):
 	mkdir -p $@
