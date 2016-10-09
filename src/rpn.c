@@ -16,6 +16,7 @@ static bool r_operand_needs_parens(const char *operand, const char *operator);
 static bool is_expression(const char *operand);
 static char *parenthesize(char *dest, const char *src);
 static bool is_valid_infix_expression(const char *infix);
+static bool is_parenthesized_subexpression(const char *infix, size_t i);
 static size_t find_closing_paren(const char *infix, size_t i);
 static bool is_valid_token(const char *infix, size_t i);
 static bool is_valid_operand_placement(const char *infix, size_t i);
@@ -207,18 +208,32 @@ static bool is_valid_infix_expression(const char *infix) {
     char token[2];
     copy_substring(token, infix + i, 1);
 
-    if (is_opening_paren(token)) {
-      size_t substr_start = i + 1;
-      size_t substr_stop = find_closing_paren(infix, i);
-
-      if (substr_stop < substr_start) {
-        return false;
-      }
-
-      i = substr_stop;
+    if (is_parenthesized_subexpression(infix, i)) {
+      i = find_closing_paren(infix, i);
     } else if (!is_valid_token(infix, i)) {
       return false;
     }
+  }
+
+  return true;
+}
+
+static bool is_parenthesized_subexpression(const char *infix, size_t i) {
+  assert(infix != NULL);
+  assert(i < strlen(infix));
+
+  char token[2];
+  copy_substring(token, infix + i, 1);
+
+  if (!is_opening_paren(token)) {
+    return false;
+  }
+
+  size_t substr_start = i + 1;
+  size_t substr_stop = find_closing_paren(infix, i);
+
+  if (substr_stop < substr_start) {
+    return false;
   }
 
   return true;
