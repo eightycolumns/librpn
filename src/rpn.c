@@ -203,7 +203,37 @@ static bool is_valid_infix_expression(const char *infix) {
   assert(infix != NULL);
 
   for (size_t i = 0; i < strlen(infix); i += 1) {
-    if (!is_valid_token(infix, i)) {
+    char token[2];
+    copy_substring(token, infix + i, 1);
+
+    if (is_opening_paren(token)) {
+      size_t substr_start = i + 1;
+      size_t substr_stop = i;
+
+      int n_parens = 0;
+
+      for (size_t j = i; j < strlen(infix); j += 1) {
+        char token[2];
+        copy_substring(token, infix + j, 1);
+
+        if (is_opening_paren(token)) {
+          n_parens += 1;
+        } else if (is_closing_paren(token)) {
+          n_parens -= 1;
+        }
+
+        if (n_parens == 0) {
+          substr_stop = j;
+          break;
+        }
+      }
+
+      if (substr_stop < substr_start) {
+        return false;
+      }
+
+      i = substr_stop;
+    } else if (!is_valid_token(infix, i)) {
       return false;
     }
   }
@@ -226,7 +256,7 @@ static bool is_valid_token(const char *infix, size_t i) {
     return true;
   }
 
-  return is_opening_paren(token) || is_closing_paren(token);
+  return false;
 }
 
 static bool is_valid_operand_placement(const char *infix, size_t i) {
