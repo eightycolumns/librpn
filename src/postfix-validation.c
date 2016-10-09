@@ -10,6 +10,10 @@
 bool is_valid_postfix_expression(const char *postfix) {
   assert(postfix != NULL);
 
+  if (strcmp("", postfix) == 0) {
+    return false;
+  }
+
   int n_operands = 0;
   int n_operators = 0;
 
