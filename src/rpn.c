@@ -236,7 +236,12 @@ static bool is_parenthesized_subexpression(const char *infix, size_t i) {
     return false;
   }
 
-  return true;
+  size_t substr_length = substr_stop - substr_start;
+
+  char infix_substr[substr_length + 1];
+  copy_substring(infix_substr, infix + substr_start, substr_length);
+
+  return is_valid_infix_expression(infix_substr);
 }
 
 static size_t find_closing_paren(const char *infix, size_t i) {
