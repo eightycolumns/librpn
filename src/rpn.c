@@ -230,7 +230,7 @@ static bool is_valid_token(const char *infix, size_t i) {
   }
 
   if (is_operator(token)) {
-    if (i == strlen(infix) - 1) {
+    if (i == 0 || i == strlen(infix) - 1) {
       return false;
     }
 
