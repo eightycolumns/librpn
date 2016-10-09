@@ -1,6 +1,7 @@
 #include "src/infix-validation.h"
 
 #include <assert.h>
+#include <ctype.h>
 #include <stdbool.h>
 #include <string.h>
 
@@ -17,6 +18,18 @@ bool is_valid_infix_expression(const char *infix) {
   assert(infix != NULL);
 
   if (is_empty_string(infix)) {
+    return false;
+  }
+
+  bool is_entirely_whitespace = true;
+
+  for (size_t i = 0; i < strlen(infix); i += 1) {
+    if (!isspace(infix[i])) {
+      is_entirely_whitespace = false;
+    }
+  }
+
+  if (is_entirely_whitespace) {
     return false;
   }
 
