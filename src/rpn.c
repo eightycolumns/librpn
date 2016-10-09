@@ -16,7 +16,7 @@ static bool r_operand_needs_parens(const char *operand, const char *operator);
 static bool is_expression(const char *operand);
 static char *parenthesize(char *dest, const char *src);
 static bool is_valid_infix_expression(const char *infix);
-static bool is_valid_token(const char *token);
+static bool is_valid_token(const char *infix, size_t i);
 
 int infix_to_postfix(char *postfix, const char *infix) {
   if (postfix == NULL || infix == NULL) {
@@ -201,10 +201,7 @@ static bool is_valid_infix_expression(const char *infix) {
   assert(infix != NULL);
 
   for (size_t i = 0; i < strlen(infix); i += 1) {
-    char token[2];
-    copy_substring(token, infix + i, 1);
-
-    if (!is_valid_token(token)) {
+    if (!is_valid_token(infix, i)) {
       return false;
     }
   }
@@ -212,11 +209,27 @@ static bool is_valid_infix_expression(const char *infix) {
   return true;
 }
 
-static bool is_valid_token(const char *token) {
-  assert(token != NULL);
+static bool is_valid_token(const char *infix, size_t i) {
+  assert(infix != NULL);
+  assert(i < strlen(infix));
+
+  char token[2];
+  copy_substring(token, infix + i, 1);
+
+  if (is_operand(token)) {
+    if (i > 0) {
+      char prev_token[2];
+      copy_substring(prev_token, infix + i - 1, 1);
+
+      if (is_operand(prev_token)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 
   return (
-    is_operand(token) ||
     is_operator(token) ||
     is_opening_paren(token) ||
     is_closing_paren(token)
