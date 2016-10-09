@@ -18,6 +18,7 @@ static char *parenthesize(char *dest, const char *src);
 static bool is_valid_infix_expression(const char *infix);
 static bool is_valid_token(const char *infix, size_t i);
 static bool is_valid_operand_placement(const char *infix, size_t i);
+static bool is_valid_operator_placement(const char *infix, size_t i);
 
 int infix_to_postfix(char *postfix, const char *infix) {
   if (postfix == NULL || infix == NULL) {
@@ -221,18 +222,7 @@ static bool is_valid_token(const char *infix, size_t i) {
     return true;
   }
 
-  if (is_operator(token)) {
-    if (i == 0 || i == strlen(infix) - 1) {
-      return false;
-    } else {
-      char prev_token[2];
-      copy_substring(prev_token, infix + i - 1, 1);
-
-      if (is_operator(prev_token)) {
-        return false;
-      }
-    }
-
+  if (is_operator(token) && is_valid_operator_placement(infix, i)) {
     return true;
   }
 
@@ -250,6 +240,24 @@ static bool is_valid_operand_placement(const char *infix, size_t i) {
     if (is_operand(prev_token)) {
       return false;
     }
+  }
+
+  return true;
+}
+
+static bool is_valid_operator_placement(const char *infix, size_t i) {
+  assert(infix != NULL);
+  assert(i < strlen(infix));
+
+  if (i > 0 && i < strlen(infix) - 1) {
+    char prev_token[2];
+    copy_substring(prev_token, infix + i - 1, 1);
+
+    if (is_operator(prev_token)) {
+      return false;
+    }
+  } else {
+    return false;
   }
 
   return true;
