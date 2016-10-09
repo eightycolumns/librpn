@@ -21,12 +21,7 @@ bool is_valid_infix_expression(const char *infix) {
   }
 
   for (size_t i = 0; i < strlen(infix); i += 1) {
-    char token[2];
-    copy_substring(token, infix + i, 1);
-
-    if (is_whitespace(token)) {
-      continue;
-    } else if (is_parenthesized_subexpression(infix, i)) {
+    if (is_parenthesized_subexpression(infix, i)) {
       i = find_closing_paren(infix, i);
     } else if (!is_valid_token(infix, i)) {
       return false;
@@ -92,6 +87,10 @@ static bool is_valid_token(const char *infix, size_t i) {
 
   char token[2];
   copy_substring(token, infix + i, 1);
+
+  if (is_whitespace(token)) {
+    return true;
+  }
 
   if (is_operand(token) && is_valid_operand_placement(infix, i)) {
     return true;
