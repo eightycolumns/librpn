@@ -20,7 +20,9 @@ bool is_valid_infix_expression(const char *infix) {
     return false;
   }
 
-  for (size_t i = 0; i < strlen(infix); i += 1) {
+  size_t infix_length = strlen(infix);
+
+  for (size_t i = 0; i < infix_length; i += 1) {
     if (is_parenthesized_subexpression(infix, i)) {
       i = find_closing_paren(infix, i);
     } else if (!is_valid_token(infix, i)) {
@@ -63,7 +65,9 @@ static size_t find_closing_paren(const char *infix, size_t i) {
 
   int n_parens = 0;
 
-  for (size_t j = i; j < strlen(infix); j += 1) {
+  size_t infix_length = strlen(infix);
+
+  for (size_t j = i; j < infix_length; j += 1) {
     char token[2];
     copy_substring(token, infix + j, 1);
 

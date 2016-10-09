@@ -31,7 +31,9 @@ int infix_to_postfix(char *postfix, const char *infix) {
 
   Stack *stack = NULL;
 
-  for (size_t i = 0; i < strlen(infix); i += 1) {
+  size_t infix_length = strlen(infix);
+
+  for (size_t i = 0; i < infix_length; i += 1) {
     char token[2];
     copy_substring(token, infix + i, 1);
 
@@ -85,7 +87,9 @@ int postfix_to_infix(char *infix, const char *postfix) {
 
   Stack *stack = NULL;
 
-  for (size_t i = 0; i < strlen(postfix); i += 1) {
+  size_t postfix_length = strlen(postfix);
+
+  for (size_t i = 0; i < postfix_length; i += 1) {
     char token[2];
     copy_substring(token, postfix + i, 1);
 

@@ -28,7 +28,9 @@ bool is_entirely_whitespace(const char *string) {
     return false;
   }
 
-  for (size_t i = 0; i < strlen(string); i += 1) {
+  size_t string_length = strlen(string);
+
+  for (size_t i = 0; i < string_length; i += 1) {
     if (!isspace(string[i])) {
       return false;
     }

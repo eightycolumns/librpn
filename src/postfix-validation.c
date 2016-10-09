@@ -17,7 +17,9 @@ bool is_valid_postfix_expression(const char *postfix) {
   int n_operands = 0;
   int n_operators = 0;
 
-  for (size_t i = 0; i < strlen(postfix); i += 1) {
+  size_t postfix_length = strlen(postfix);
+
+  for (size_t i = 0; i < postfix_length; i += 1) {
     char token[2];
     copy_substring(token, postfix + i, 1);
 

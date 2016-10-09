@@ -27,7 +27,9 @@ int lowest_operator_precedence_in(const char *expression) {
 
   int inside_parens = 0;
 
-  for (size_t i = 0; i < strlen(expression); i += 1) {
+  size_t expression_length = strlen(expression);
+
+  for (size_t i = 0; i < expression_length; i += 1) {
     char token[2];
     copy_substring(token, expression + i, 1);
 
