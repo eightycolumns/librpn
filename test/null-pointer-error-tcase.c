@@ -1,5 +1,7 @@
 #include "test/null-pointer-error-tcase.h"
 
+#include <stddef.h>
+
 #include <check.h>
 
 #include "src/rpn.h"
