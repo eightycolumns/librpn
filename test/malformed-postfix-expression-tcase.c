@@ -45,6 +45,10 @@ START_TEST(test_07) {
   test_for_malformed_expression_error("");
 } END_TEST
 
+START_TEST(test_08) {
+  test_for_malformed_expression_error(" ");
+} END_TEST
+
 TCase *malformed_postfix_expression_tcase(void) {
   TCase *malformed_postfix_expression_tcase = tcase_create(
     "Malformed Postfix Expression"
@@ -57,6 +61,7 @@ TCase *malformed_postfix_expression_tcase(void) {
   tcase_add_test(malformed_postfix_expression_tcase, test_05);
   tcase_add_test(malformed_postfix_expression_tcase, test_06);
   tcase_add_test(malformed_postfix_expression_tcase, test_07);
+  tcase_add_test(malformed_postfix_expression_tcase, test_08);
 
   return malformed_postfix_expression_tcase;
 }
