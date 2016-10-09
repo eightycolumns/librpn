@@ -294,6 +294,15 @@ static bool is_valid_operand_placement(const char *infix, size_t i) {
     }
   }
 
+  if (i < strlen(infix) - 1) {
+    char next_token[2];
+    copy_substring(next_token, infix + i + 1, 1);
+
+    if (is_opening_paren(next_token)) {
+      return false;
+    }
+  }
+
   return true;
 }
 
