@@ -229,9 +229,13 @@ static bool is_valid_token(const char *infix, size_t i) {
     return true;
   }
 
-  return (
-    is_operator(token) ||
-    is_opening_paren(token) ||
-    is_closing_paren(token)
-  );
+  if (is_operator(token)) {
+    if (i == strlen(infix) - 1) {
+      return false;
+    }
+
+    return true;
+  }
+
+  return is_opening_paren(token) || is_closing_paren(token);
 }
