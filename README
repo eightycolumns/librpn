@@ -1,0 +1,101 @@
+LIBRPN
+
+  The objective of this exercise was to create a library for converting
+  mathematical expressions to and from Reverse Polish Notation.
+
+DISCUSSION
+
+  The infix conversion routine is a straightforward implementation of Dijkstra's
+  shunting-yard algorithm. The infix validation routine deals only with operands
+  and operators, handling parenthesized subexpressions recursively.
+
+  The postfix conversion routine uses parentheses when and only when necessary.
+  That was the most difficult (and interesting!) part of the exercise.
+
+  Both conversions use a stack implemented as a singly linked list. It has the
+  usual push(), pop(), and peek(), plus clear() to prevent memory leaks.
+
+  The conversion functions are longer than I'd like, but the control flow is
+  clear, so I'm hesitant to refactor further. When there's risk of obfuscation
+  by fragmentation, long functions are the lesser evil.
+
+  It was difficult to name tests in this exercise. Legal names like
+  open_paren_a_plus_b_close_paren_times_c_converts_to_a_b_plus_c_times weren't
+  readable, and readable names like "(a+b)*c converts to ab+c*" weren't legal.
+  So I went with "placeholder" names like test_01, test_02, etc., and used
+  ck_assert_msg() to provide information on failure. For example, if "(a+b)*c"
+  were incorrectly converted to "abc*+", the message would be:
+
+  Input "(a+b)*c". Expected output "ab+c*", got "abc*+".
+
+DEPENDENCIES
+
+  First, install check:
+    apt-get install check
+
+  Then, install pkg-config:
+    apt-get install pkg-config
+
+BUILD
+
+  To build librpn.a and its test executable:
+    make
+
+  To run all tests:
+    make check
+
+  To return everything to its pre-build state:
+    make clean
+
+USAGE
+
+  The infix conversion function has the signature
+    int infix_to_postfix(char *postfix, const char *infix);
+
+  It accepts an expression in infix notation and writes its conversion to the
+  buffer pointed to by postfix. It returns 0 on success, or an error code
+  indicating the cause of failure.
+
+  The postfix conversion function has the signature
+    int postfix_to_infix(char *infix, const char *postfix);
+
+  It accepts an expression in postfix notation and writes its conversion to the
+  buffer pointed to by infix. It returns 0 on success, or an error code
+  indicating the cause of failure.
+
+  Both infix_to_postfix() and postfix_to_infix()
+    - Accept only single lowercase letters as valid operands
+    - Accept only "+", "-", "*", "/", and "^" as valid operators
+    - Ignore whitespace in inputs (e.g., "a + b - c" is treated like "a+b-c")
+    - Write outputs without whitespace (e.g., "a+b-c", not "a + b - c")
+
+  When converting from infix to postfix, gratuitous parentheses are allowed, but
+  not required. For example, the input "(((a)+(b))*((c)^(d)))" is treated like
+  "(a+b)*c^d". When converting from postfix to infix, parentheses are used when
+  and only when necessary. For example, "ab+cd^*" is converted to "(a+b)*c^d",
+  not to "(a+b)*(c^d)" or "((a+b)*(c^d))" or "(((a)+(b))*((c)^(d)))".
+
+  All operators have their usual precedence and associativity:
+
+  +----------+------------+---------------+
+  | Operator | Precedence | Associativity |
+  +----------+------------+---------------+
+  | ^        | 3          | R             |
+  | * /      | 2          | L             |
+  | + -      | 1          | L             |
+  +----------+------------+---------------+
+
+  Addition and multiplication are associative operations, so "abc++" is
+  converted to "a+b+c", not "a+(b+c)". The parentheses are unnecessary.
+  Subtraction, division, and exponentiation are nonassociative operations, so
+  "abc--" is converted to "a-(b-c)", not "a-b-c". The parentheses are necessary.
+
+  On failure, infix_to_postfix() and postfix_to_infix() return one of the
+  following error codes:
+
+  RPN_MALFORMED_EXPRESSION_ERROR
+    The input string was a malformed infix or postfix expression.
+  RPN_MEMORY_ALLOCATION_ERROR
+    The function failed to allocate memory and thus exited early.
+  RPN_NULL_POINTER_ERROR
+    One or more arguments were null pointers.
